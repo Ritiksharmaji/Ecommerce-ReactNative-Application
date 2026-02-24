@@ -1,0 +1,24 @@
+<!-- # Admin Email ( To Access Admin Routes )
+ADMIN_EMAIL="_______your_email_id_______"
+
+# MongoDB
+MONGODB_URI = "mongodb+srv://ritiksharma555598:ritiksharma555598@firstclouster.sf797k0.mongodb.net/"
+# Clerk
+CLERK_PUBLISHABLE_KEY='_______clerk_publishable_key_______'
+CLERK_SECRET_KEY='_______clerk_secret_key_______'
+CLERK_WEBHOOK_SIGNING_SECRET='_______clerk_webhook_key_______'
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME='dmwmdonoz'
+CLOUDINARY_API_KEY='316841791778638'
+CLOUDINARY_API_SECRET='281DdqaMDhqwzJS7hD95BHRJ5XQ'
+
+# Stripe ( optional ) setup if want stripe payment
+STRIPE_SECRET_KEY='sk_test_51RgSYI4dygwzWNeXMoEGC401tV96uSQsPgZoys1s3u7JAXloT8RB82zlPuh6BwgPrFroxU4OXEaCuBe2FkTgyoSk00O2P0yto3'
+STRIPE_WEBHOOK_SECRET='_______stripe_webhook_secret_______'
+
+
+
+JWT_SECRET = "greatstack"
+ADMIN_EMAIL = "admin@example.com"
+ADMIN_PASSWORD = "greatstack123" -->
