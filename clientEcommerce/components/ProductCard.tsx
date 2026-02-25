@@ -3,9 +3,11 @@ import { Link } from "expo-router";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { COLORS } from "@/constants";
+import { useWishlist } from "@/context/WishlistContext";
 
 export default function ProductCard({ product }) {
-  const isLiked = true;
+  const{toggleWishlist, isInWishlist} = useWishlist();
+  const isLiked = isInWishlist(product._id);
 
   return (
     <Link href={`/product/${product._id}`} asChild>
@@ -50,7 +52,7 @@ export default function ProductCard({ product }) {
               padding: 8,
               backgroundColor: "#fff",
               borderRadius: 50,
-            }}
+            }} onPress={(e)=>{e.stopPropagation(); toggleWishlist(product)}}
           >
             <Ionicons
               name={isLiked ? "heart" : "heart-outline"}
