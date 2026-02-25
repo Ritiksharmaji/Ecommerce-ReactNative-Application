@@ -26,4 +26,104 @@
 1) ![alt text](image-16.png)
 2) now pushed the code to githube
 
-## ==================== 
+## ==================== coderevouuew =====
+That’s completely fine 👍 — **you don’t need `.coderabbit.yaml` by default**, but without it, CodeRabbit uses **default settings**, which is why you’re seeing that message.
+
+Let’s fix it properly 👇
+
+---
+
+# ✅ Why you’re seeing this
+
+Since you don’t have a config file:
+
+* **CodeRabbit** is using default rules
+* Default = **only review PRs to main/master branch**
+
+---
+
+# 🚀 Best Solution → Create `.coderabbit.yaml`
+
+Create a file in your repo root:
+
+```
+.coderabbit.yaml
+```
+
+---
+
+## 🔥 Recommended Config (Use This)
+
+```yaml
+reviews:
+  auto_review:
+    enabled: true
+    branches:
+      - "*"
+
+  review_status: false
+```
+
+---
+
+# 📌 What this does
+
+### ✅ `branches: "*"`
+
+* Enables auto review on **ALL branches**
+* Fixes your current issue permanently
+
+### ✅ `review_status: false`
+
+* Removes that annoying message
+
+---
+
+# 🛠️ Steps to Add It
+
+1. Go to your repo
+2. Click **Add File → Create new file**
+3. Name it:
+
+   ```
+   .coderabbit.yaml
+   ```
+4. Paste the config
+5. Commit
+
+---
+
+# ⚡ After Adding
+
+* Push new PR → review happens automatically ✅
+* No more “review skipped” message ✅
+
+---
+
+# 🔥 Alternative (No config file)
+
+If you don’t want config:
+
+Just comment in PR:
+
+```
+@coderabbitai review
+```
+
+---
+
+# 💡 My Suggestion (Based on your goals)
+
+Since you're aiming for **full-stack + production-level apps**, always:
+
+* Use `.coderabbit.yaml`
+* Enable auto reviews on all branches
+
+👉 This simulates **real company workflows (very important for interviews)**
+
+---
+
+If you want next:
+I can give you a **complete GitHub setup**:
+✅ CodeRabbit + ESLint + Prettier + CI/CD
+👉 so your projects look **industry-level** 🚀
