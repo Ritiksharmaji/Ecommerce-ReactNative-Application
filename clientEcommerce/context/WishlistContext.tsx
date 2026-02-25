@@ -20,8 +20,8 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
   // toggle wishlist
     const toggleWishlist = async (product: Product) => {
-        const exists = wishlist.find((p) => p._id === product._id);
         setWishlist((prev) => {
+        const exists = prev.some((p) => p._id === product._id);
         if (exists) {
             //  REMOVE item
             return prev.filter((p) => p._id !== product._id);
