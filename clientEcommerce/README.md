@@ -141,4 +141,6 @@ I can give you a **complete GitHub setup**:
 3) ![alt text](image-23.png)
 4) ![alt text](image-24.png)
 5) ![alt text](image-25.png)
-6) 
+
+## ============ favorate screen =========
+1) ![alt text](image-26.png)
