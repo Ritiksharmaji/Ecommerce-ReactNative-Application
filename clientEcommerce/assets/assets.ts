@@ -34,7 +34,11 @@ export const dummyProducts = [
         name: "Summer Dress",
         description: "Light and airy summer dress with a floral pattern.",
         price: 55,
-        images: ["https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=1000&auto=format&fit=crop"],
+        images: 
+            [
+                "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=1000&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=1000&auto=format&fit=crop"
+            ],
         sizes: ["XS", "S", "M", "L"],
         category: "Women",
         stock: 45,

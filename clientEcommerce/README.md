@@ -127,3 +127,10 @@ If you want next:
 I can give you a **complete GitHub setup**:
 ✅ CodeRabbit + ESLint + Prettier + CI/CD
 👉 so your projects look **industry-level** 🚀
+
+
+## =============== creating product Details Screen ========
+1) ![alt text](image-17.png)
+2) ![alt text](image-18.png)
+3) ![alt text](image-19.png)
+4) ![alt text](image-20.png)
