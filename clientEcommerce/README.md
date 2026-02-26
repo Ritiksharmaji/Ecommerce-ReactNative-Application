@@ -278,3 +278,7 @@ Just tell me 👍
 =========== output ======
 1) ![alt text](image-29.png)
 2) ![alt text](image-30.png)
+
+### =========== Add user authentication with Clerk =============
+1) npm install @clerk/clerk-expo
+2) 
