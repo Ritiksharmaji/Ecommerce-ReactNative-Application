@@ -147,3 +147,134 @@ I can give you a **complete GitHub setup**:
 
 ## ====== profile =======
 1) ![alt text](image-27.png)
+
+## ====== Error fixed =======
+1) ![alt text](image-28.png)
+2) the forth tab comming 
+Got it — your folder structure clearly shows the problem 👇
+
+```
+app
+ └── (tabs)
+      ├── shop/        ❗ THIS is the issue
+      │    └── index.tsx
+      ├── cart.tsx
+      ├── favorites.tsx
+      ├── index.tsx
+      ├── profile.tsx
+```
+
+---
+
+# 💥 WHY EXTRA TAB IS COMING
+
+In **Expo Router**, **every file or folder inside `(tabs)` becomes a tab automatically**.
+
+👉 So this:
+
+```
+shop/index.tsx
+```
+
+👉 is being treated as a **separate tab → "shop" tab**
+
+That’s why:
+
+* You see a **4th tab**
+* Clicking it opens `shop/index.tsx`
+
+---
+
+# ✅ FIX (CHOOSE ONE)
+
+## ✅ OPTION 1 (BEST PRACTICE)
+
+Move `shop` **OUTSIDE `(tabs)`**
+
+### ✔ Correct structure:
+
+```
+app
+ ├── (tabs)
+ │    ├── index.tsx
+ │    ├── cart.tsx
+ │    ├── favorites.tsx
+ │    ├── profile.tsx
+ │
+ ├── shop/
+ │    └── index.tsx
+```
+
+👉 Now:
+
+* No extra tab
+* You can still navigate:
+
+```js
+router.push('/shop')
+```
+
+---
+
+## ✅ OPTION 2 (IF YOU WANT TO KEEP IT INSIDE)
+
+Hide it manually in `(tabs)/_layout.tsx`
+
+Add this:
+
+```js
+<Tabs.Screen
+  name="shop"
+  options={{
+    href: null, // 🔥 hides from tab bar
+  }}
+/>
+```
+
+---
+
+## ⚠️ WHY YOUR CURRENT BEHAVIOR HAPPENS
+
+* `(tabs)` auto-registers routes
+* Folder = tab
+* `shop/index.tsx` = `/shop`
+* So Expo creates:
+
+  * Home tab
+  * Cart tab
+  * Favorites tab
+  * Profile tab
+  * ❌ Shop tab (extra)
+
+---
+
+# 🚀 RECOMMENDED APPROACH
+
+👉 Use this structure:
+
+* Tabs = only main navigation
+* Other screens = outside tabs
+
+This is how **real apps (Flipkart/Amazon)** are structured.
+
+---
+
+# ✅ FINAL ANSWER
+
+✔ Extra tab = `shop` folder inside `(tabs)`
+✔ Clicking opens shop screen = expected behavior
+✔ Fix = move `shop` outside OR hide it
+
+---
+
+If you want next level:
+I can help you build **proper navigation flow like:**
+
+* Home → Shop → Product → Cart
+* With animations + stack inside tabs
+
+Just tell me 👍
+
+=========== output ======
+1) ![alt text](image-29.png)
+2) ![alt text](image-30.png)

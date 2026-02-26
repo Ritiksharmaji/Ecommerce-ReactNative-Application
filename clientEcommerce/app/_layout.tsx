@@ -10,7 +10,7 @@ export default function RootLayout() {
    <GestureHandlerRootView style={{flex:1}}>
      <CartProvider>
       <WishlistProvider>
-          <Stack screenOptions={{headerShown: false}} />;
+          <Stack screenOptions={{headerShown: false}} />
           <Toast config={toastConfig} />
       </WishlistProvider>
     </CartProvider>
