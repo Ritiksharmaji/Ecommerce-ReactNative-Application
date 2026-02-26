@@ -144,3 +144,6 @@ I can give you a **complete GitHub setup**:
 
 ## ============ favorate screen =========
 1) ![alt text](image-26.png)
+
+## ====== profile =======
+1) ![alt text](image-27.png)
