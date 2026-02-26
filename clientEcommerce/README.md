@@ -281,4 +281,21 @@ Just tell me 👍
 
 ### =========== Add user authentication with Clerk =============
 1) npm install @clerk/clerk-expo
-2) 
+2) then create project on cleark website and 
+3) ![alt text](image-31.png)
+4) ![alt text](image-32.png)
+5) and add it into .env file 
+6) ![alt text](image-33.png)
+7) then we need to wrap out application into clearkProvide 
+8) ![alt text](image-34.png)
+9) then we need to install the expo-secure-store: npm install expo-secure-store
+10) ![alt text](image-35.png)
+12) ![alt text](image-36.png)
+13) ![alt text](image-37.png)
+14) ![alt text](image-38.png)
+15) ![alt text](image-39.png)
+16) ![alt text](image-40.png)
+17) ![alt text](image-41.png)
+18) ![alt text](image-42.png)
+19) ![alt text](image-43.png)
+
