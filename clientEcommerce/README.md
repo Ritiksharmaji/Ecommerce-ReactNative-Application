@@ -134,3 +134,11 @@ I can give you a **complete GitHub setup**:
 2) ![alt text](image-18.png)
 3) ![alt text](image-19.png)
 4) ![alt text](image-20.png)
+
+## ============ Create Shop Screen ===============
+1) ![alt text](image-21.png)
+2) ![alt text](image-22.png)
+3) ![alt text](image-23.png)
+4) ![alt text](image-24.png)
+5) ![alt text](image-25.png)
+6) 
