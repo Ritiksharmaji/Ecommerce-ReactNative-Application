@@ -282,3 +282,30 @@ Just tell me 👍
 ### =========== Add user authentication with Clerk =============
 1) npm install @clerk/clerk-expo
 2) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## ============= working on admin panal ===============
+1) npm i expo-image-picker
+2) ![alt text](image-31.png)
+3) ![alt text](image-32.png)
+4) ![alt text](image-33.png)
+5) ![alt text](image-34.png)
+6) ![alt text](image-35.png)
+7) ![alt text](image-36.png)
+8) ![alt text](image-37.png)
+9) ![alt text](image-38.png)
+10) ![alt text](image-39.png)
+11) 
