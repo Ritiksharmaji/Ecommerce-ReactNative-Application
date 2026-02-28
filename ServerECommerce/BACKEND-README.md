@@ -140,3 +140,31 @@ Open your web browser and navigate to http://localhost:3000 to see the
 4) ![alt text](image-5.png)
 5) ![alt text](image-6.png)
 6) ![alt text](image-7.png)
+
+## ============ configure mongoDB , cleark and cloudnary ===
+1) npm install mongoose
+2) ![alt text](image-8.png)
+3) ![alt text](image-9.png)
+4) ![alt text](image-10.png)
+5) ![alt text](image-11.png)
+6) ![alt text](image-12.png)
+7) now next is configure the clerk webhook 
+8) ![alt text](image-13.png)
+9) ![alt text](image-14.png)
+10) ![alt text](image-15.png)
+11) ![alt text](image-16.png)
+12) ![alt text](image-17.png)
+13) ![alt text](image-18.png)
+14) ![alt text](image-19.png)
+15) ![alt text](image-20.png)
+16) ![alt text](image-21.png)
+17) ![alt text](image-22.png)
+18) ![alt text](image-23.png)
+19) 
+
+## =========== deplay it on vercel so that we can provide the endpoint to clerk webhook ==
+1) ![alt text](image-24.png)
+2) ![alt text](image-25.png)
+3) ![alt text](image-26.png)
+4) now pushed the code on githube 
+5) 
