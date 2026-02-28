@@ -307,3 +307,8 @@ Just tell me 👍
 17) ![alt text](image-41.png)
 18) ![alt text](image-42.png)
 19) ![alt text](image-43.png)
+
+
+####### ============== conveting Static to dynamic and axios configuation ==============
+1) install : npm i axios
+2) 
