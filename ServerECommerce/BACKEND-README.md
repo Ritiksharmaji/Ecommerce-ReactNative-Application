@@ -167,4 +167,14 @@ Open your web browser and navigate to http://localhost:3000 to see the
 2) ![alt text](image-25.png)
 3) ![alt text](image-26.png)
 4) now pushed the code on githube 
-5) 
+5) ![alt text](image-27.png)
+6) now we need to connect with backend to vercel 
+7) ![alt text](image-28.png)
+8) ![alt text](image-29.png)
+9) ![alt text](image-30.png)
+10) ![alt text](image-31.png)
+11) ![alt text](image-32.png)
+12) ![alt text](image-33.png)
+13) ![alt text](image-34.png)
+14) ![alt text](image-35.png)
+15) 
