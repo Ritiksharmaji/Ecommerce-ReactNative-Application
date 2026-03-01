@@ -188,3 +188,12 @@ Open your web browser and navigate to http://localhost:3000 to see the
 6) ![alt text](image-41.png)
 
 7) ![alt text](image-42.png)
+8) ![alt text](image-43.png)
+
+## ======== working with products and setup the cloudnary to update the image ========
+1) ![alt text](image-44.png)
+2) ![alt text](image-45.png)
+3) now install the cloudnary: npm i cloudinary multer
+4) and: npm i -D @types/multer
+4) ![alt text](image-46.png)
+5) 
