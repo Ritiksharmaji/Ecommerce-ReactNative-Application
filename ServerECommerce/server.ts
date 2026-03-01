@@ -11,6 +11,8 @@ import OrderRouter from "./routes/ordersRoutes.js";
 import AddressRouter from "./routes/addressRoutes.js";
 import WishlistRouter from "./routes/wishlistRoutes.js";
 import AdminRouter from "./routes/adminRoutes.js";
+import paymentRouter from "./routes/paymentRoute.js";
+import { handleStripeWebhook } from "./controllers/paymentController.js";
 
 
 
@@ -25,7 +27,9 @@ app.use(express.json());
 app.use(clerkMiddleware())
 app.post("/api/clerk", express.raw({ type: "application/json" }), clerkWebhook);
 await makeAdmin();
-
+// Stripe Webhook
+process.env.STRIPE_SECRET_KEY && app.post("/api/stripe", express.raw({ type: "application/json" }), handleStripeWebhook);
+process.env.STRIPE_SECRET_KEY && app.use("/api/payments", paymentRouter);
 const port = process.env.PORT || 3000;
 
 app.get('/', (req: Request, res: Response) => {
