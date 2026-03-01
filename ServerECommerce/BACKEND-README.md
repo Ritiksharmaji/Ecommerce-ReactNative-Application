@@ -178,3 +178,11 @@ Open your web browser and navigate to http://localhost:3000 to see the
 13) ![alt text](image-34.png)
 14) ![alt text](image-35.png)
 15) ![alt text](image-36.png)
+
+## ========== 
+1) ![alt text](image-37.png)
+2) ![alt text](image-38.png)
+3) ![alt text](image-39.png)
+4) ![alt text](image-40.png)
+5) now pused the code to githube and marge to main 
+
