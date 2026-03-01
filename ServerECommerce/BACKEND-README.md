@@ -187,4 +187,4 @@ Open your web browser and navigate to http://localhost:3000 to see the
 5) now pused the code to githube and marge to main 
 6) ![alt text](image-41.png)
 
-
+7) ![alt text](image-42.png)
