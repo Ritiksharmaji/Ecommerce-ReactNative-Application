@@ -6,6 +6,11 @@ import { clerkMiddleware } from '@clerk/express'
 import { clerkWebhook } from "./controllers/webhooks.js";
 import makeAdmin from "./scripts/makeAdmin.js";
 import ProductRouter from "./routes/productsRoutes.js";
+import CartRouter from "./routes/cartRoutes.js";
+import OrderRouter from "./routes/ordersRoutes.js";
+import AddressRouter from "./routes/addressRoutes.js";
+import WishlistRouter from "./routes/wishlistRoutes.js";
+import AdminRouter from "./routes/adminRoutes.js";
 
 
 
@@ -27,6 +32,11 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Server is Live!');
 });
 app.use("/api/products", ProductRouter);
+app.use("/api/cart", CartRouter);
+app.use("/api/orders", OrderRouter);
+app.use("/api/addresses", AddressRouter);
+app.use("/api/wishlist", WishlistRouter);
+app.use("/api/admin", AdminRouter);
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
