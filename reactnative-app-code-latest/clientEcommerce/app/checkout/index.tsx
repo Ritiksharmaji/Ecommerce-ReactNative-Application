@@ -1,0 +1,253 @@
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { ScrollView, Text, TextInput, TouchableOpacity, View, ActivityIndicator, Modal } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { WebView } from "react-native-webview";
+import Header from "@/components/Header";
+import { COLORS } from "@/constants";
+import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import api from "@/constants/api";
+import Toast from "react-native-toast-message";
+
+// Stripe Checkout needs an https return URL. The web backend builds it from the
+// request's `origin` header as `${origin}/verify?...`. We send this sentinel origin
+// and intercept navigation to it inside the WebView (it never actually loads).
+const RETURN_ORIGIN = "https://forever-mobile.local";
+
+type AddressForm = {
+    firstName: string;
+    lastName: string;
+    street: string;
+    city: string;
+    state: string;
+    zipcode: string;
+    country: string;
+    phone: string;
+};
+
+const EMPTY_ADDRESS: AddressForm = {
+    firstName: "",
+    lastName: "",
+    street: "",
+    city: "",
+    state: "",
+    zipcode: "",
+    country: "",
+    phone: "",
+};
+
+export default function Checkout() {
+    const router = useRouter();
+    const { cartTotal, cartItems, clearCart } = useCart();
+    const { isSignedIn } = useAuth();
+    const [loading, setLoading] = useState(false);
+    const [address, setAddress] = useState<AddressForm>(EMPTY_ADDRESS);
+    const [paymentMethod, setPaymentMethod] = useState<"cash" | "stripe">("cash");
+
+    // Stripe WebView gateway state
+    const [gatewayUrl, setGatewayUrl] = useState<string | null>(null);
+
+    const shipping = 2.0;
+    const tax = 0;
+    const total = cartTotal + shipping + tax;
+
+    const set = (key: keyof AddressForm, value: string) => setAddress((prev) => ({ ...prev, [key]: value }));
+
+    const addressValid = address.street && address.city && address.state && address.zipcode && address.country;
+
+    // Build the order payload exactly like the web PlaceOrder page does
+    const buildOrderData = () => ({
+        address,
+        items: cartItems.map((it) => ({
+            _id: it.productId,
+            name: it.product.name,
+            price: it.price,
+            quantity: it.quantity,
+            size: it.size,
+            image: it.product.images,
+        })),
+        amount: total,
+    });
+
+    // Stripe redirects to ${RETURN_ORIGIN}/verify?success=..&orderId=.. — confirm with backend.
+    const verifyStripePayment = async (success: string | null, orderId: string | null) => {
+        try {
+            const { data } = await api.post("/api/order/verifyStripe", { success, orderId });
+            if (data?.success) {
+                clearCart();
+                Toast.show({ type: "success", text1: "Payment successful", text2: "Your order is confirmed" });
+                router.replace("/orders");
+            } else {
+                Toast.show({ type: "error", text1: "Payment cancelled", text2: "Your order was not completed" });
+                router.replace("/(tabs)/cart");
+            }
+        } catch (e: any) {
+            Toast.show({ type: "error", text1: "Verification failed", text2: e?.message ?? "Try again" });
+        }
+    };
+
+    // Sync decision for the WebView: block the sentinel return URL, allow real Stripe pages.
+    const handleGatewayNavigation = (url: string): boolean => {
+        if (!url.startsWith(`${RETURN_ORIGIN}/verify`)) return true;
+        const params = new URLSearchParams(url.split("?")[1] || "");
+        setGatewayUrl(null);
+        verifyStripePayment(params.get("success"), params.get("orderId"));
+        return false;
+    };
+
+    const handlePlaceOrder = async () => {
+        if (!isSignedIn) {
+            Toast.show({ type: "error", text1: "Login required", text2: "Please sign in to place an order" });
+            router.push("/sign-in");
+            return;
+        }
+        if (cartItems.length === 0) {
+            Toast.show({ type: "error", text1: "Cart empty", text2: "Add items before checking out" });
+            return;
+        }
+        if (!addressValid) {
+            Toast.show({ type: "error", text1: "Address required", text2: "Please fill in all address fields" });
+            return;
+        }
+
+        setLoading(true);
+        try {
+            if (paymentMethod === "stripe") {
+                // POST /api/order/stripe -> { success, session_url }. We pass `origin` so the
+                // backend builds a return URL we can intercept in the WebView.
+                const { data } = await api.post("/api/order/stripe", buildOrderData(), {
+                    headers: { origin: RETURN_ORIGIN },
+                });
+                if (!data?.success) throw new Error(data?.message || "Could not start payment");
+                setGatewayUrl(data.session_url);
+                return;
+            }
+
+            // COD order: POST /api/order/place -> clears server cart on success
+            const { data } = await api.post("/api/order/place", buildOrderData());
+            if (!data?.success) throw new Error(data?.message || "Could not place order");
+
+            clearCart();
+            Toast.show({ type: "success", text1: "Order placed", text2: "Thank you for your purchase!" });
+            router.replace("/orders");
+        } catch (e: any) {
+            Toast.show({ type: "error", text1: "Order failed", text2: e?.message ?? "Something went wrong" });
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const field = (label: string, value: string, k: keyof AddressForm, keyboardType?: any) => (
+        <View className="mb-3">
+            <Text className="text-secondary text-xs mb-1">{label}</Text>
+            <TextInput
+                className="bg-white px-4 py-3 rounded-xl border border-gray-100 text-primary"
+                value={value}
+                onChangeText={(t) => set(k, t)}
+                keyboardType={keyboardType}
+                placeholderTextColor="#999"
+            />
+        </View>
+    );
+
+    return (
+        <SafeAreaView className="flex-1 bg-surface" edges={["top"]}>
+            <Header title="Checkout" showBack />
+
+            <ScrollView className="flex-1 px-4 mt-4" keyboardShouldPersistTaps="handled">
+                {/* Address Section */}
+                <Text className="text-lg font-bold text-primary mb-4">Shipping Address</Text>
+                <View className="flex-row gap-3">
+                    <View className="flex-1">{field("First Name", address.firstName, "firstName")}</View>
+                    <View className="flex-1">{field("Last Name", address.lastName, "lastName")}</View>
+                </View>
+                {field("Street", address.street, "street")}
+                <View className="flex-row gap-3">
+                    <View className="flex-1">{field("City", address.city, "city")}</View>
+                    <View className="flex-1">{field("State", address.state, "state")}</View>
+                </View>
+                <View className="flex-row gap-3">
+                    <View className="flex-1">{field("Zip Code", address.zipcode, "zipcode", "numeric")}</View>
+                    <View className="flex-1">{field("Country", address.country, "country")}</View>
+                </View>
+                {field("Phone", address.phone, "phone", "phone-pad")}
+
+                {/* Payment Section */}
+                <Text className="text-lg font-bold text-primary mb-4 mt-2">Payment Method</Text>
+
+                <TouchableOpacity
+                    onPress={() => setPaymentMethod("cash")}
+                    className={`bg-white p-4 rounded-xl mb-4 shadow-sm flex-row items-center border-2 ${paymentMethod === "cash" ? "border-primary" : "border-transparent"}`}
+                >
+                    <Ionicons name="cash-outline" size={24} color={COLORS.primary} />
+                    <View className="ml-3 flex-1">
+                        <Text className="text-base font-bold text-primary">Cash on Delivery</Text>
+                        <Text className="text-secondary text-xs mt-1">Pay when you receive the order</Text>
+                    </View>
+                    {paymentMethod === "cash" && <Ionicons name="checkmark-circle" size={24} color={COLORS.primary} />}
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    onPress={() => setPaymentMethod("stripe")}
+                    className={`bg-white p-4 rounded-xl mb-6 shadow-sm flex-row items-center border-2 ${paymentMethod === "stripe" ? "border-primary" : "border-transparent"}`}
+                >
+                    <Ionicons name="card-outline" size={24} color={COLORS.primary} />
+                    <View className="ml-3 flex-1">
+                        <Text className="text-base font-bold text-primary">Pay with Card</Text>
+                        <Text className="text-secondary text-xs mt-1">Credit or Debit Card</Text>
+                    </View>
+                    {paymentMethod === "stripe" && <Ionicons name="checkmark-circle" size={24} color={COLORS.primary} />}
+                </TouchableOpacity>
+            </ScrollView>
+
+            <View className="p-4 bg-white shadow-lg border-t border-gray-100">
+                <View className="flex-row justify-between mb-2">
+                    <Text className="text-secondary">Subtotal</Text>
+                    <Text className="font-bold">${cartTotal.toFixed(2)}</Text>
+                </View>
+                <View className="flex-row justify-between mb-2">
+                    <Text className="text-secondary">Shipping</Text>
+                    <Text className="font-bold">${shipping.toFixed(2)}</Text>
+                </View>
+                <View className="flex-row justify-between mb-4">
+                    <Text className="text-xl font-bold text-primary">Total</Text>
+                    <Text className="text-xl font-bold text-primary">${total.toFixed(2)}</Text>
+                </View>
+
+                <TouchableOpacity
+                    onPress={handlePlaceOrder}
+                    disabled={loading}
+                    className={`p-4 rounded-xl items-center ${loading ? "bg-gray-400" : "bg-primary"}`}
+                >
+                    {loading ? <ActivityIndicator color="white" /> : <Text className="text-white font-bold text-lg">Place Order</Text>}
+                </TouchableOpacity>
+            </View>
+
+            {/* Stripe Checkout gateway */}
+            <Modal visible={!!gatewayUrl} animationType="slide" onRequestClose={() => setGatewayUrl(null)}>
+                <SafeAreaView className="flex-1 bg-white" edges={["top"]}>
+                    <View className="flex-row justify-between items-center p-4 border-b border-gray-100">
+                        <Text className="text-lg font-bold text-primary">Secure Payment</Text>
+                        <TouchableOpacity onPress={() => setGatewayUrl(null)}>
+                            <Ionicons name="close" size={24} color={COLORS.primary} />
+                        </TouchableOpacity>
+                    </View>
+                    {gatewayUrl && (
+                        <WebView
+                            source={{ uri: gatewayUrl }}
+                            onShouldStartLoadWithRequest={(req) => handleGatewayNavigation(req.url)}
+                            startInLoadingState
+                            renderLoading={() => (
+                                <View className="absolute inset-0 justify-center items-center bg-white">
+                                    <ActivityIndicator size="large" color={COLORS.primary} />
+                                </View>
+                            )}
+                        />
+                    )}
+                </SafeAreaView>
+            </Modal>
+        </SafeAreaView>
+    );
+}
